@@ -18,6 +18,7 @@ train_data = datasets.FashionMNIST(
 test_data = datasets.FashionMNIST(    
     root='data', train=False, download=True, transform=ToTensor()
 )
+
 batch_size = 64
 trainloader = DataLoader(    
     train_data, batch_size=batch_size
@@ -25,6 +26,7 @@ trainloader = DataLoader(
 testloader = DataLoader(    
     test_data, batch_size=batch_size
 )
+
 for X, y in testloader:    
     print('Shape of X [N, C, H, W]:\n', X.shape)    
     print('Shape of y:\n', y.shape, '\n', y.dtype)    
@@ -41,6 +43,7 @@ labels_map = {
     8: "Bag",    
     9: "Ankle Boot",
 } 
+
 fig = plt.figure(figsize=(4, 4))
 cols, rows = 3, 3
 for i in range(1, cols * rows + 1):    
@@ -64,10 +67,12 @@ class Net(nn.Module):
             nn.Linear(512, 10),            
             nn.ReLU()        
             )    
-        def forward(self, x):        
-            x = self.flatten(x)        
-            Net_Out = self.layer(x)        
-            return Net_Out 
+
+    def forward(self, x):        
+        x = self.flatten(x)        
+        Net_Out = self.layer(x)        
+        return Net_Out
+
 def train(dataloader, model, loss_fn, optimizer):    
     pbar = tqdm(dataloader, desc=f'Training')    
     for batch, (X, y) in enumerate(pbar):        
@@ -76,10 +81,10 @@ def train(dataloader, model, loss_fn, optimizer):
         # Feedforward        
         pred = model(X)         
 
-        # # Calc. Loss        
+        # Calc. Loss        
         loss = loss_fn(pred, y)         
         
-        # # Backpropagation        
+        # Backpropagation        
         optimizer.zero_grad()        
         loss.backward()        
         optimizer.step() 
@@ -103,7 +108,7 @@ def test(dataloader, model, loss_fn):
     # Generate the Model
 model = Net().to(device) 
     
-    # Set the Training Parameters
+# Set the Training Parameters
 lr = 1e-3
 loss_fn = nn.CrossEntropyLoss().to(device)
 optimizer = optim.SGD(model.parameters(), lr=lr) 
