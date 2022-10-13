@@ -154,7 +154,6 @@ fig = plt.figure(figsize=(20,5))
 line1, line2 = plt.plot([],[],[],[])
 plt.clf() 
 
-
 epochs = 100
 for t in range(epochs):
     print(f'----- Epoch {t+1} -----')
@@ -164,7 +163,7 @@ for t in range(epochs):
     line1.set_xdata(np.append(line1.get_xdata(), t+1))
     line1.set_ydata(np.append(line1.get_ydata(), loss))
     line2.set_ydata(np.append(line2.get_ydata(), accuracy))
-     
+
 fig.add_subplot(1,2,1)
 plt.plot(line1.get_xdata(), line1.get_ydata(), color='red')
 plt.plot(line1.get_xdata(), line1.get_ydata(), 'o', color='red')
@@ -178,3 +177,9 @@ plt.ylabel('Accuracy', fontsize=12)
 plt.tight_layout()
 plt.autoscale()
 plt.show()
+
+
+# softmax
+# crossentropyloss
+# network architecture
+# optim
