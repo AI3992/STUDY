@@ -92,7 +92,7 @@ def train(dataloader, model, loss_fn, optimizer):
 def test(dataloader, model, loss_fn):    
     size = len(dataloader.dataset)    
     num_batches = len(dataloader)    
-    model.eval()    
+    #model.eval()    
     loss, correct = 0,0    
     with torch.no_grad():        
         for X, y in dataloader:            
@@ -105,7 +105,7 @@ def test(dataloader, model, loss_fn):
     print(f'Test Accuracy: {(100*correct):>0.1f}%     Loss: {loss:>8f} \n')
             
     return 100*correct, loss   
-    # Generate the Model
+# Generate the Model
 model = Net().to(device) 
     
 # Set the Training Parameters
