@@ -44,7 +44,7 @@ for X, y in testloader:
 labels_map = {    
     0: "T-Shirt",    
     1: "Trouser",    
-    2: "mantoman",    
+    2: "pullover",    
     3: "Dress",    
     4: "Coat",    
     5: "Sandal",    
@@ -56,6 +56,17 @@ labels_map = {
 
 # flatten는 메소드는 2차원 데이터를 1차원 데이터로 바꿈
 # layer는 nn.Squential로 정의해 network architecture을 정한다
+
+fig = plt.figure(figsize=(4, 4))
+cols, rows = 3, 3
+for i in range(1, cols * rows + 1):
+    sample_idx = torch.randint(len(train_data), size=(1,)).item()    
+    img, label = train_data[sample_idx]    
+    fig.add_subplot(rows, cols, i)    
+    plt.title(labels_map[label])    
+    plt.axis("off")    
+    plt.imshow(img.squeeze(), cmap="gray")
+plt.show()
 
 class Net(nn.Module):
     def __init__(self):
