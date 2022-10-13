@@ -12,6 +12,10 @@ device = 'cuda'
 #print('CUDA:', torch.cuda.is_available(), '     Use << {} >>'.format(device.upper()))
 #print('PyTorch Version:', torch.__version__)   
 
+# torchvision의 dataset을 이용하여 FashionMNIST를 가져오는 코드
+# root은 파일을 저장할 경로를 만들어 준다
+# train은 True일 시 training 데이터로 사용되고, False일 시 test 데이터로 사용된다
+# transform은 다운받은 데이터의 format을 pytorch에서 사용하는 tensor로 변환해준다
 train_data = datasets.FashionMNIST(    
     root='data', train=True, download=True, transform=ToTensor()
 )
@@ -19,7 +23,12 @@ test_data = datasets.FashionMNIST(
     root='data', train=False, download=True, transform=ToTensor()
 )
 
+# batch_size는 한번에 training할지를 정하는 부분
+
 batch_size = 64
+
+# dataloader는 dataset의 data를 반복 가능하게 해줌
+
 trainloader = DataLoader(    
     train_data, batch_size=batch_size
 )
@@ -30,11 +39,12 @@ testloader = DataLoader(
 for X, y in testloader:    
     print('Shape of X [N, C, H, W]:\n', X.shape)    
     print('Shape of y:\n', y.shape, '\n', y.dtype)    
-    break     
+    break
+
 labels_map = {    
     0: "T-Shirt",    
     1: "Trouser",    
-    2: "Pullover",    
+    2: "mantoman",    
     3: "Dress",    
     4: "Coat",    
     5: "Sandal",    
@@ -73,21 +83,21 @@ class Net(nn.Module):
         Net_Out = self.layer(x)        
         return Net_Out
 
-def train(dataloader, model, loss_fn, optimizer):    
-    pbar = tqdm(dataloader, desc=f'Training')    
-    for batch, (X, y) in enumerate(pbar):        
-        # X, y = X.to(device), y.to(device)         
+def train(dataloader, model, loss_fn, optimizer):
+    pbar = tqdm(dataloader, desc=f'Training')
+    for batch, (X, y) in enumerate(pbar):
+        # X, y = X.to(device), y.to(device)
         
-        # Feedforward        
-        pred = model(X)         
+        # Feedforward
+        pred = model(X) 
 
-        # Calc. Loss        
-        loss = loss_fn(pred, y)         
+        # Calc. Loss
+        loss = loss_fn(pred, y)
         
-        # Backpropagation        
-        optimizer.zero_grad()        
-        loss.backward()        
-        optimizer.step() 
+        # Backpropagation
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
         
 def test(dataloader, model, loss_fn):    
     size = len(dataloader.dataset)    
@@ -95,8 +105,7 @@ def test(dataloader, model, loss_fn):
     #model.eval()    
     loss, correct = 0,0    
     with torch.no_grad():        
-        for X, y in dataloader:            
-            # X, y = X.to(device), y.to(device)            
+        for X, y in dataloader:                     
             pred = model(X)            
             loss += loss_fn(pred, y).item()            
             correct += (pred.argmax(1) == y).type(torch.float).sum().item()    
