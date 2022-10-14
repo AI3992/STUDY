@@ -41,7 +41,7 @@ for X, y in testloader:
     print('Shape of y:\n', y.shape, '\n', y.dtype)    
     break
 
-labels_map = {    
+labels_map = {
     0: "T-Shirt",    
     1: "Trouser",    
     2: "pullover",    
@@ -173,12 +173,12 @@ for t in range(epochs):
     # Add Accuracy & Loss to the Lines
     line1.set_xdata(np.append(line1.get_xdata(), t+1))
     line1.set_ydata(np.append(line1.get_ydata(), loss))
-    line2.set_ydata(np.append(line2.get_ydata(), accuracy))
-
+    line2.set_ydata(np.append(line2.get_ydata(), accuracy)
+    )
 fig.add_subplot(1,2,1)
 plt.plot(line1.get_xdata(), line1.get_ydata(), color='red')
 plt.plot(line1.get_xdata(), line1.get_ydata(), 'o', color='red')
-plt.xlabel('Epoch', fontsize=12); 
+plt.xlabel('Epoch', fontsize=12);
 plt.ylabel('Loss', fontsize=12)
 fig.add_subplot(1,2,2)
 plt.plot(line1.get_xdata(), line2.get_ydata(), color='blue')
@@ -189,7 +189,7 @@ plt.tight_layout()
 plt.autoscale()
 plt.show()
 
-
+# CUDA
 # softmax
 # crossentropyloss
 # network architecture

@@ -136,7 +136,7 @@ for t in range(epochs):
     line1.set_xdata(np.append(line1.get_xdata(), t+1))    
     line1.set_ydata(np.append(line1.get_ydata(), loss))    
     line2.set_ydata(np.append(line2.get_ydata(), accuracy)
-    ) 
+    )
 fig.add_subplot(1,2,1)
 plt.plot(line1.get_xdata(), line1.get_ydata(), color='red')
 plt.plot(line1.get_xdata(), line1.get_ydata(), 'o', color='red')
