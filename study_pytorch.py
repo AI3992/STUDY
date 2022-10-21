@@ -23,7 +23,7 @@ test_data = datasets.FashionMNIST(
     root='data', train=False, download=True, transform=ToTensor()
 )
 
-# batch_size는 한번에 얼마나 train 할지를 정하는 부분
+# batch_size는 한번에 얼마나 train 할지를 정하는 변수
 
 batch_size = 64
 
@@ -93,6 +93,7 @@ def train(dataloader, model, loss_fn, optimizer):
     for batch, (x, y) in enumerate(pbar):
         # CUDA를 이용하여 pytorch를 돌리는 경우 연산속도가 빨라지고
         # GPU에 tensor 옮겨줌
+        # vvvvv
         X, y = X.to(device), y.to(device)
         
         # Frerdforward
