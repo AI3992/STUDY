@@ -1,3 +1,5 @@
+# https://tuttozurich.tistory.com/40
+
 import numpy as np
 import matplotlib.pyplot as plt
 from tqdm import tqdm
@@ -84,21 +86,21 @@ def train(dataloader, model, loss_fn, optimizer):
         # GPU에 tensor 옮겨줌
         # vvvvv
         X, y = X.to(device), y.to(device)
-        
+    
         # Feerdforward
         pred = model(x)
 
         # Calc, Loss
         loss = loss_fn(pred. y)
-
+    
         # 전 epoch에서 도출된 grad가 남아있지 못 하도록 없애주는 코드
         optimizer.zero_grad()
-        
+    
         # 역전파를 돌리기 위해 체인룰 이용
         # 체인 룰이라 불리는 법칙은 사실은 합성 함수 미분의 원리를 말하는 것입니다. 
         # 좀 더 쉽게 말하자면, 딥러닝에서 체인룰이란 어떤 특정 값을 계산하기 위해 연속적으로 미분을 진행하는 것입니다.
         loss.backward()
-        
+    
         # 계산된 grad를 Neural Network의 weight/bais를 업데이트하는 코드
         optimizer.step()
 
@@ -109,16 +111,22 @@ def test(dataloader, model, loss_fn):
 
     size = len(dataloader.dataset)
     num_batchs = len(dataloader)
-    
-    # model.eval은 
-    # training 때와 inference 때 하는 역할이 다른 설정들을 적절하게 설정해준다
+    # ^^^
+    # 위 둘을 구하는 이유는 loss/accuracy를 구하기 위함
 
+    # model.eval은 
+    # dropout(overfittiong 대비)이나 
+    # batch Normalization(배치정규화 whitening 대비)과 같이
+    # training 때와 inference 때 하는 역할이 다른 설정들을 적절하게 설정해준다
+    # drop out의 on/off 자동화 해줌
+    # 여기선 쓸모 없는데 의미가 있어서 추가됨
     model.eval()
     loss, correct = 0, 0
 
-    # torch.no_grad는 지금 inference를 하니 
+    # torch.no_grad는 지금 inference를 하니
     # Neural Network의 parameter들에 default로 설정되있던
     # gradient tracking을 하지마 라는 의미로 쓰임
+    # gradient tracking이 계속 되면 연산 속도가 느려짐
 
     with torch.no_grad():
         for X, y in dataloader:
