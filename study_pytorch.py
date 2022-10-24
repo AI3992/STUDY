@@ -29,44 +29,33 @@ batch_size = 64
 
 # dataloader는 dataset의 data를 반복 가능하게 해줌
 
-trainloader = DataLoader(    
+trainloader = DataLoader(
     train_data, batch_size=batch_size
 )
-testloader = DataLoader(    
+testloader = DataLoader(
     test_data, batch_size=batch_size
 )
 
 for X, y in testloader:
-    print('Shape of X [N, C, H, W]:\n', X.shape)    
-    print('Shape of y:\n', y.shape, '\n', y.dtype)    
+    print('Shape of X [N, C, H, W]:\n', X.shape)
+    print('Shape of y:\n', y.shape, '\n', y.dtype)
     break
 
 labels_map = {
-    0: "T-Shirt",    
-    1: "Trouser",    
-    2: "pullover",    
-    3: "Dress",    
-    4: "Coat",    
-    5: "Sandal",    
-    6: "Shirt",    
-    7: "Sneaker",    
-    8: "Bag",    
+    0: "T-Shirt",
+    1: "Trouser",
+    2: "pullover",
+    3: "Dress",
+    4: "Coat",
+    5: "Sandal",
+    6: "Shirt",
+    7: "Sneaker",
+    8: "Bag",
     9: "Ankle Boot",
 }
 
 # flatten는 메소드는 2차원 데이터를 1차원 데이터로 바꿈
 # layer는 nn.Squential로 정의해 network architecture을 정한다
-
-fig = plt.figure(figsize=(4, 4))
-cols, rows = 3, 3
-for i in range(1, cols * rows + 1):
-    sample_idx = torch.randint(len(train_data), size=(1,)).item()    
-    img, label = train_data[sample_idx]    
-    fig.add_subplot(rows, cols, i)    
-    plt.title(labels_map[label])    
-    plt.axis("off")    
-    plt.imshow(img.squeeze(), cmap="gray")
-plt.show()
 
 class Net(nn.Module):
     def __init__(self):
@@ -96,15 +85,21 @@ def train(dataloader, model, loss_fn, optimizer):
         # vvvvv
         X, y = X.to(device), y.to(device)
         
-        # Frerdforward
+        # Feerdforward
         pred = model(x)
 
         # Calc, Loss
         loss = loss_fn(pred. y)
 
-        # Backptopagation
+        # 전 epoch에서 도출된 grad가 남아있지 못 하도록 없애주는 코드
         optimizer.zero_grad()
+        
+        # 역전파를 돌리기 위해 체인룰 이용
+        # 체인 룰이라 불리는 법칙은 사실은 합성 함수 미분의 원리를 말하는 것입니다. 
+        # 좀 더 쉽게 말하자면, 딥러닝에서 체인룰이란 어떤 특정 값을 계산하기 위해 연속적으로 미분을 진행하는 것입니다.
         loss.backward()
+        
+        # 계산된 grad를 Neural Network의 weight/bais를 업데이트하는 코드
         optimizer.step()
 
 def test(dataloader, model, loss_fn):
@@ -122,7 +117,7 @@ def test(dataloader, model, loss_fn):
     loss, correct = 0, 0
 
     # torch.no_grad는 지금 inference를 하니 
-    # Neural Network의 patameter들에 default로 설정되있던
+    # Neural Network의 parameter들에 default로 설정되있던
     # gradient tracking을 하지마 라는 의미로 쓰임
 
     with torch.no_grad():
@@ -194,4 +189,3 @@ plt.show()
 # softmax
 # crossentropyloss
 # network architecture
-# optim
