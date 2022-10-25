@@ -9,7 +9,7 @@ from torch.utils.data import DataLoader
 from torchvision import datasets
 from torchvision.transforms import ToTensor 
 
-device = 'cuda' 
+device = 'cpu' 
 #if torch.cuda.is_available()
 #print('CUDA:', torch.cuda.is_available(), '     Use << {} >>'.format(device.upper()))
 #print('PyTorch Version:', torch.__version__)   
@@ -56,6 +56,18 @@ labels_map = {
     9: "Ankle Boot",
 }
 
+fig = plt.figure(figsize=(4, 4))
+cols, rows = 3, 3
+for i in range(1, cols * rows + 1):
+    sample_idx = torch.randint(len(train_data), size=(1,)).item()    
+    img, label = train_data[sample_idx]    
+    fig.add_subplot(rows, cols, i)    
+    plt.title(labels_map[label])    
+    plt.axis("off")    
+    plt.imshow(img.squeeze(), cmap="gray")
+plt.show()
+
+
 # flatten는 메소드는 2차원 데이터를 1차원 데이터로 바꿈
 # layer는 nn.Squential로 정의해 network architecture을 정한다
 
@@ -85,13 +97,13 @@ def train(dataloader, model, loss_fn, optimizer):
         # CUDA를 이용하여 pytorch를 돌리는 경우 연산속도가 빨라지고
         # GPU에 tensor 옮겨줌
         # vvvvv
-        X, y = X.to(device), y.to(device)
+        #X, y = X.to(device), y.to(device)
     
         # Feerdforward
         pred = model(x)
 
         # Calc, Loss
-        loss = loss_fn(pred. y)
+        loss = loss_fn(pred,y)
     
         # 전 epoch에서 도출된 grad가 남아있지 못 하도록 없애주는 코드
         optimizer.zero_grad()
@@ -182,7 +194,7 @@ for t in range(epochs):
 fig.add_subplot(1,2,1)
 plt.plot(line1.get_xdata(), line1.get_ydata(), color='red')
 plt.plot(line1.get_xdata(), line1.get_ydata(), 'o', color='red')
-plt.xlabel('Epoch', fontsize=12);
+plt.xlabel('Epoch', fontsize=12)
 plt.ylabel('Loss', fontsize=12)
 fig.add_subplot(1,2,2)
 plt.plot(line1.get_xdata(), line2.get_ydata(), color='blue')
