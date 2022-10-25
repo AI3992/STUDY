@@ -204,8 +204,3 @@ plt.ylabel('Accuracy', fontsize=12)
 plt.tight_layout()
 plt.autoscale()
 plt.show()
-
-# CUDA
-# softmax
-# crossentropyloss
-# network architecture
